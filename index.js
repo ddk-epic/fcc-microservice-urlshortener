@@ -86,8 +86,10 @@ app.get("/api/shorturl/:short_url", async (req, res) => {
     const existingUrl = await Url.findOne({ short_url: short_url }).exec();
     if (existingUrl) {
       res.redirect(existingUrl.original_url);
+    } else {
+      return res.json({ error: "no short URL found for the given input" });
     }
   } catch (err) {
-    return res.json({ error: "no short URL found for the given input" });
+    return res.json({ error: "Internal server error" });
   }
 });
